@@ -14,41 +14,31 @@ public class UserDaoHibernateIml implements UserDaoHibernate {
     private EntityManager entityManager;
 
     @Override
-    public void saveUser(String name, String lastName, byte age) {
-        entityManager.getTransaction().begin();
-        User user = new User(name, lastName, age);
-        entityManager.persist(user);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+    public void saveUser(User user) {
+        if (user.getId() == 0) {
+            entityManager.persist(user);
+        } else {
+            entityManager.merge(user);
+        }
     }
 
     @Override
     public void removeUserById(long id) {
-        entityManager.getTransaction().begin();
         User user = entityManager.find(User.class, id);
         entityManager.remove(user);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+
     }
 
     @Override
     public List<User> getAllUsers() {
+
         List<User> userList = entityManager.createQuery("from User", User.class).getResultList();
-        entityManager.close();
         return userList;
+
     }
 
     @Override
-    public void changeUser(long id, String name, String lastname, byte age) {
-        entityManager.getTransaction().begin();
-        User user = entityManager.find(User.class, id);
-        entityManager.detach(user);
-        user.setName(name);
-        user.setLastname(lastname);
-        user.setAge(age);
-        entityManager.merge(user);
-        entityManager.getTransaction().commit();
-        entityManager.close();
-
+    public User getUserById(long id) {
+        return entityManager.find(User.class, id);
     }
 }

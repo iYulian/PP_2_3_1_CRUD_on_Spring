@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/html">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,29 +11,33 @@
     <table border="1">
         <tr>
             <th>name</th>
-            <th>model</th>
+            <th>lastname</th>
             <th>age</th>
-            <th>updateButton</th>
-            <th>deleteButton</th>
+            <th>buttons</th>
         </tr>
         <tr>
         <tr th:each="msg : ${users}">
+
             <td th:utext="${msg.getName()}">brand</td>
             <td th:utext="${msg.getLastname()}">model</td>
             <td th:utext="${msg.getAge()}">price</td>
-             <td><form action="" method="get">
-                <input type="submit"/>
-             </form></td>
-             <td><form action="" method="get">
-                 <input type="submit"/>
-             </form></td>
+
+            <td><form action="updateUser" method="get">
+                <input hidden="hidden" th:name="id" th:value="${msg.getId()}"/>
+                <input type="submit" value="Update"/>
+            </form>
+                <br>
+            <form action="deleteUser" method="get">
+                <input hidden="hidden" th:name="id" th:value="${msg.getId()}"/>
+                <input type="submit" value="Delete"/>
+            </form></td>
+
         </tr>
         </tr>
     </table>
 
-    <form action="" method="get">
-
-        <input type="submit"/>
+    <form action="addUser" method="get">
+        <input type="submit" value="Add"/>
     </form>
 
 </div>

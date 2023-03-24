@@ -1,7 +1,7 @@
 package web.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDaoHibernate;
 import web.model.User;
 
@@ -10,27 +10,33 @@ import java.util.List;
 @Service
 public class UserServiceIml implements UserService{
 
-    @Autowired
-    private  UserDaoHibernate userDao;
+    private final UserDaoHibernate userDao;
+
+    public UserServiceIml(UserDaoHibernate userDao) {
+        this.userDao = userDao;
+    }
 
 
     @Override
-    public void saveUser(String name, String lastName, byte age) {
-        userDao.saveUser(name, lastName, age);
+    @Transactional
+    public void saveUser(User user) {
+        userDao.saveUser(user);
     }
 
     @Override
+    @Transactional
     public void removeUserById(long id) {
         userDao.removeUserById(id);
     }
 
     @Override
+    @Transactional
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
     @Override
-    public void changeUser(long id, String name, String lastname, byte age) {
-        userDao.changeUser(id,name, lastname, age);
+    public User getUserById(long id) {
+        return userDao.getUserById(id);
     }
 }
